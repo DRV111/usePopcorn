@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SearchBar from './SearchBar';
 import Logo from './Logo';
+import NumResults from './NumResults';
 
 function NavBar() {
   const [query, setQuery] = useState('');
@@ -8,9 +9,7 @@ function NavBar() {
     <nav className="nav-bar">
       <Logo />
       <SearchBar query={query} setQuery={setQuery} />
-      <p className="num-results">
-        Found <strong>X</strong> results
-      </p>
+      <NumResults />
     </nav>
   );
 }
