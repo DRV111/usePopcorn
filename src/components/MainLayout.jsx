@@ -1,11 +1,11 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import ListBox from './ListBox';
 import WatchedBox from './WatchedBox';
 
-function MainLayout() {
+function MainLayout({ movies }) {
   return (
     <main className="main">
-      <ListBox />
+      <ListBox movies={movies} />
       <WatchedBox />
     </main>
   );

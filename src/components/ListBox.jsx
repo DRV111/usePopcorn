@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import tempMovieData from '../data/moviesList.js';
 import MovieList from './MovieList.jsx';
 
-function ListBox() {
-  const [movies, setMovies] = useState(tempMovieData);
+function ListBox({ movies }) {
   const [isOpen1, setIsOpen1] = useState(true);
   return (
     <div className="box">
