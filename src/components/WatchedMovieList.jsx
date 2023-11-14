@@ -4,7 +4,7 @@ function WatchedMovieList({ watched }) {
   return (
     <ul className="list">
       {watched.map((movie) => (
-        <WatchedMovie movie={watched} key={movie.imdbID} />
+        <WatchedMovie movie={movie} key={movie.imdbID} />
       ))}
     </ul>
   );
