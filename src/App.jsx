@@ -4,6 +4,9 @@ import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import Logo from './components/Logo';
 import NumResults from './components/NumResults';
+import ListBox from './components/ListBox';
+import WatchedBox from './components/WatchedBox';
+import MovieList from './components/MovieList';
 import tempMovieData from './data/moviesList';
 
 function App() {
@@ -16,7 +19,12 @@ function App() {
         <SearchBar query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
-      <MainLayout movies={movies} />
+      <MainLayout>
+        <ListBox>
+          <MovieList movies={movies} />
+        </ListBox>
+        <WatchedBox />
+      </MainLayout>
     </>
   );
 }
