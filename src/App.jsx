@@ -9,6 +9,7 @@ import MovieList from './components/MovieList';
 import Summary from './components/Summary';
 import WatchedMovieList from './components/WatchedMovieList';
 import Loader from './components/Loader';
+import ErrorMsg from './components/ErrorMsg';
 // import tempWatchedData from './data/watchedMovies';
 // import tempMovieData from './data/moviesList';
 
@@ -19,24 +20,29 @@ function App() {
   const [watched, setWatched] = useState([]);
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState('');
 
   const movieQuery = 'punisher';
 
-  useEffect(
-    function () {
-      async function fetchmoviesData() {
+  useEffect(function () {
+    async function fetchMoviesData() {
+      try {
         setIsLoading(true);
         const res = await fetch(
           `https://www.omdbapi.com/?apikey=${API_KEY}&s=${movieQuery}`
         );
+        if (!res.ok) throw new Error('Connection Lost');
         const data = await res.json();
+        if (data.Response === 'False') throw new Error(data.Error);
         setMovies(data.Search);
+      } catch (err) {
+        setIsError(err.message);
+      } finally {
         setIsLoading(false);
       }
-      fetchmoviesData();
-    },
-    [movieQuery]
-  );
+    }
+    fetchMoviesData();
+  }, []);
 
   return (
     <>
@@ -46,7 +52,11 @@ function App() {
         <NumResults movies={movies} />
       </NavBar>
       <MainLayout>
-        <Box>{isLoading ? <Loader /> : <MovieList movies={movies} />}</Box>
+        <Box>
+          {isLoading && <Loader />}
+          {!isLoading && !isError && <MovieList movies={movies} />}
+          {isError && <ErrorMsg message={isError} />}
+        </Box>
         <Box>
           <Summary watched={watched} />
           <WatchedMovieList watched={watched} />
