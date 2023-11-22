@@ -22,27 +22,34 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState('');
 
-  const movieQuery = 'punisher';
-
-  useEffect(function () {
-    async function fetchMoviesData() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${API_KEY}&s=${movieQuery}`
-        );
-        if (!res.ok) throw new Error('Connection Lost');
-        const data = await res.json();
-        if (data.Response === 'False') throw new Error(data.Error);
-        setMovies(data.Search);
-      } catch (err) {
-        setIsError(err.message);
-      } finally {
-        setIsLoading(false);
+  useEffect(
+    function () {
+      async function fetchMoviesData() {
+        try {
+          setIsLoading(true);
+          setIsError('');
+          const res = await fetch(
+            `https://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`
+          );
+          if (!res.ok) throw new Error('Connection Lost');
+          const data = await res.json();
+          if (data.Response === 'False') throw new Error(data.Error);
+          setMovies(data.Search);
+        } catch (err) {
+          setIsError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
       }
-    }
-    fetchMoviesData();
-  }, []);
+      if (!query.length < 2) {
+        setMovies([]);
+        setIsError('');
+        return;
+      }
+      fetchMoviesData();
+    },
+    [query, setQuery]
+  );
 
   return (
     <>
