@@ -11,10 +11,9 @@ import WatchedMovieList from './components/WatchedMovieList';
 import Loader from './components/Loader';
 import ErrorMsg from './components/ErrorMsg';
 import MovieDetails from './components/MovieDetails';
+import { API_KEY } from './data/API_KEY';
 // import tempWatchedData from './data/watchedMovies';
 // import tempMovieData from './data/moviesList';
-
-const API_KEY = '4c10dde2';
 
 function App() {
   const [query, setQuery] = useState('');
