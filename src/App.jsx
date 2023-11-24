@@ -10,17 +10,26 @@ import Summary from './components/Summary';
 import WatchedMovieList from './components/WatchedMovieList';
 import Loader from './components/Loader';
 import ErrorMsg from './components/ErrorMsg';
+import MovieDetails from './components/MovieDetails';
 // import tempWatchedData from './data/watchedMovies';
 // import tempMovieData from './data/moviesList';
 
-const API_KEY = '106c87f9';
+const API_KEY = '4c10dde2';
 
 function App() {
+  const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
-  const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState('');
+  const [selectedId, setSelectedId] = useState(null);
+
+  function handleSelecteMovie(id) {
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
+  }
+  function handleCloseMovie() {
+    setSelectedId(null);
+  }
 
   useEffect(
     function () {
@@ -29,26 +38,30 @@ function App() {
           setIsLoading(true);
           setIsError('');
           const res = await fetch(
-            `https://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`
+            `http://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`
           );
           if (!res.ok) throw new Error('Connection Lost');
+
           const data = await res.json();
+
           if (data.Response === 'False') throw new Error(data.Error);
+
           setMovies(data.Search);
+          console.log(data.Search);
         } catch (err) {
           setIsError(err.message);
         } finally {
           setIsLoading(false);
         }
       }
-      if (!query.length < 2) {
+      if (query.length < 3) {
         setMovies([]);
         setIsError('');
         return;
       }
       fetchMoviesData();
     },
-    [query, setQuery]
+    [query]
   );
 
   return (
@@ -61,12 +74,23 @@ function App() {
       <MainLayout>
         <Box>
           {isLoading && <Loader />}
-          {!isLoading && !isError && <MovieList movies={movies} />}
+          {!isLoading && !isError && (
+            <MovieList movies={movies} onSelectMovie={handleSelecteMovie} />
+          )}
           {isError && <ErrorMsg message={isError} />}
         </Box>
         <Box>
-          <Summary watched={watched} />
-          <WatchedMovieList watched={watched} />
+          {selectedId ? (
+            <MovieDetails
+              selectedId={selectedId}
+              onCloseMovie={handleCloseMovie}
+            />
+          ) : (
+            <>
+              <Summary watched={watched} />
+              <WatchedMovieList watched={watched} />
+            </>
+          )}
         </Box>
       </MainLayout>
     </>
