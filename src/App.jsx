@@ -71,6 +71,7 @@ function App() {
         setIsError('');
         return;
       }
+      handleCloseMovie();
       fetchMoviesData();
 
       return () => {
