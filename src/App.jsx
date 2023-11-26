@@ -40,12 +40,15 @@ function App() {
 
   useEffect(
     function () {
+      const controller = new AbortController();
+
       async function fetchMoviesData() {
         try {
           setIsLoading(true);
           setIsError('');
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`
+            `http://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`,
+            { signal: controller.signal }
           );
           if (!res.ok) throw new Error('Connection Lost');
 
@@ -55,8 +58,11 @@ function App() {
 
           setMovies(data.Search);
           console.log(data.Search);
+          setIsError('');
         } catch (err) {
-          setIsError(err.message);
+          if (err.name !== 'AbortError') {
+            setIsError(err.message);
+          }
         } finally {
           setIsLoading(false);
         }
@@ -67,6 +73,10 @@ function App() {
         return;
       }
       fetchMoviesData();
+
+      return () => {
+        controller.abort();
+      };
     },
     [query]
   );
