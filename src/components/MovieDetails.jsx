@@ -66,6 +66,10 @@ function MovieDetails({
     function () {
       if (!title) return;
       document.title = `Movie | ${title}`;
+
+      return () => {
+        document.title = '🍿usePopcorn';
+      };
     },
     [title]
   );
