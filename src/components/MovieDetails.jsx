@@ -48,6 +48,22 @@ function MovieDetails({
 
   useEffect(
     function () {
+      function callBack(e) {
+        if (e.code === 'Escape' || e.key === 'Backspace') {
+          onCloseMovie();
+        }
+      }
+
+      document.addEventListener('keydown', callBack);
+      return function () {
+        document.removeEventListener('keydown', callBack);
+      };
+    },
+    [onCloseMovie]
+  );
+
+  useEffect(
+    function () {
       async function getMovieDetails() {
         setIsLoading(true);
         const res = await fetch(

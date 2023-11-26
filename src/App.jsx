@@ -57,7 +57,6 @@ function App() {
           if (data.Response === 'False') throw new Error(data.Error);
 
           setMovies(data.Search);
-          console.log(data.Search);
           setIsError('');
         } catch (err) {
           if (err.name !== 'AbortError') {
