@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import MainLayout from './components/MainLayout';
 import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
@@ -12,6 +12,7 @@ import Loader from './components/Loader';
 import ErrorMsg from './components/ErrorMsg';
 import MovieDetails from './components/MovieDetails';
 import { useMovies } from './hooks/useMovies';
+import { useLocalStorageState } from './hooks/useLocalStorageState';
 // import tempWatchedData from './data/watchedMovies';
 // import tempMovieData from './data/moviesList';
 
@@ -22,10 +23,12 @@ function App() {
 
   const { movies, isLoading, isError } = useMovies(query);
 
-  const [watched, setWatched] = useState(function () {
-    const storedValue = localStorage.getItem('watched');
-    return JSON.parse(storedValue);
-  });
+  const [watched, setWatched] = useLocalStorageState([], 'watched');
+
+  // const [watched, setWatched] = useState(function () {
+  //   const storedValue = localStorage.getItem('watched');
+  //   return JSON.parse(storedValue);
+  // });
 
   function handleSelecteMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
@@ -43,13 +46,6 @@ function App() {
   function handleRemoveWatchedMovie(movie) {
     setWatched((watched) => watched.filter((m) => m.imdbID !== movie.imdbID));
   }
-
-  useEffect(
-    function () {
-      localStorage.setItem('watched', JSON.stringify(watched));
-    },
-    [watched]
-  );
 
   return (
     <>
