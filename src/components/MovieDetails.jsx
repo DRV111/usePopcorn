@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { API_KEY } from '../data/API_KEY';
 import Rating from './Rating';
 import Loader from './Loader';
+import { useKey } from '../hooks/useKey';
 
 function MovieDetails({
   selectedId,
@@ -46,21 +47,7 @@ function MovieDetails({
     onCloseMovie();
   }
 
-  useEffect(
-    function () {
-      function callBack(e) {
-        if (e.code === 'Escape' || e.key === 'Backspace') {
-          onCloseMovie();
-        }
-      }
-
-      document.addEventListener('keydown', callBack);
-      return function () {
-        document.removeEventListener('keydown', callBack);
-      };
-    },
-    [onCloseMovie]
-  );
+  useKey('Escape', onCloseMovie);
 
   useEffect(
     function () {
