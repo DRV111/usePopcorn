@@ -2,8 +2,8 @@
   "name": "use-popcorn",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://github.com/DRV111/usePopcorn",
   "type": "module",
+  "homepage": "https://tiny-yeot-ba1f26.netlify.app",
   "scripts": {
     "dev": "vite",
     "predeploy": "npm run build",
