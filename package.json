@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://tiny-yeot-ba1f26.netlify.app",
+  "homepage": "https://drv111.github.io/usePopcorn/",
   "scripts": {
     "dev": "vite",
     "predeploy": "npm run build",
